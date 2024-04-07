@@ -1,6 +1,277 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;700&display=swap');
+:root {
+  --light-square-color: #f0d9b5;
+  --dark-square-color: #b58863;
+  --light-text-color: #b58863; // Choose an appropriate color
+  --dark-text-color: #f0d9b5; // Choose an appropriate color
+}
 
-html, 
-body {
-  font-family: 'Montserrat', sans-serif;
+// App container
+.app {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+}
+.sidebar {
+  width: 8%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom:0;
+  background-color: #f0d9b5;
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  justify-items: center;
+  align-items: flex-start;
+}
+
+.sidebar a {
+  margin-top: 1rem;
+  text-decoration: none;
+  color: #000;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+}
+
+.sidebar .settings {
+  grid-row: 4;
+  margin-top: 20px;
+}
+
+.sidebar .user {
+  grid-row: 5;
+  margin-bottom: 20px;
+}
+
+.chessboard-container {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  height: calc(94vh - 20px);
+  background-color: #333;
+  border-radius: 10px;
+  padding: 0px 53px;
+  margin-left: 24rem;
+}
+
+/* Chessboard squares */
+.square {
+  position: relative;
+  background-color: var(--light-square-color);
+  color: var(--light-text-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Dark squares */
+.square.dark {
+  background-color: var(--dark-square-color);
+  color: var(--dark-text-color); // Set the text color for dark squares
+}
+
+/* Light squares */
+.square.light {
+  background-color: #f0d9b5;
+}
+
+/* Chessboard grid */
+.chessboard {
+  width: 80vh;
+  height: 80vh;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  margin: auto;
+}
+
+.square[data-layout="1"]::before {
+  content: attr(data-square-letter);
+  position: absolute;
+  bottom: 2px;
+  right: 5px;
+  color: inherit;
+}
+
+.square[data-layout="1"]::after {
+  content: attr(data-square-number);
+  position: absolute;
+  top: 2px;
+  left: 5px;
+  color: inherit;
+}
+
+.square[data-layout="2"]::before {
+  content: attr(data-square-letter);
+  position: absolute;
+  bottom: 2px;
+  right: 5px;
+  color: inherit;
+}
+
+.square[data-layout="2"]::after {
+  content: attr(data-square-number);
+  position: absolute;
+  top: 2px;
+  left: 5px;
+  color: inherit;
+}
+
+.square[data-layout="3"]::before {
+  content: attr(data-square-letter);
+  position: absolute;
+  bottom: -20px;
+  right: 5px;
+  color: inherit;
+}
+
+.square[data-layout="3"]::after {
+  content: attr(data-square-number);
+  position: absolute;
+  top: 5px;
+  left: -20px;
+  color: inherit;
+}
+
+.square[data-layout="4"]::before {
+  content: attr(data-square-letter);
+  position: absolute;
+  bottom: -20px;
+  right: 5px;
+  color: inherit;
+}
+
+.square[data-layout="4"]::after {
+  content: attr(data-square-number);
+  position: absolute;
+  top: 5px;
+  left: -20px;
+  color: inherit;
+}
+
+.square[data-layout="4"]:nth-child(-n+8)::before {
+  top: -20px;
+  bottom: auto;
+}
+
+.square[data-layout="4"]:nth-child(n+57)::before {
+  bottom: -20px;
+  top: auto;
+}
+
+.square[data-layout="4"]:nth-child(8n+1)::after {
+  left: -20px;
+  right: auto;
+}
+
+.square[data-layout="4"]:nth-child(8n)::after {
+  right: -20px;
+  left: auto;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+
+.buttons-container button {
+  margin-left: 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 10px;
+}
+
+.layout-1,
+.layout-2,
+.layout-3,
+.layout-4 {
+  padding: 0.5rem 0.75rem;
+  background-color: var(--light-square-color);
+  color: var(--dark-square-color); // set text color to dark square color
+  border: #000 solid thin;
+}
+
+.layout-1.selected,
+.layout-2.selected,
+.layout-3.selected,
+.layout-4.selected {
+  padding: 0.5rem 0.75rem;
+  background-color: var(--dark-square-color);
+  color: var(--light-square-color); // set text color to light square color
+  border: white solid thin;
+}
+
+.layout-1:hover,
+.layout-2:hover,
+.layout-3:hover,
+.layout-4:hover,
+.perspective-button:hover {
+  box-shadow: 0 0 10px #00ff00;
+}
+
+
+.perspective-button {
+  padding: 0.5rem 0.75rem;
+  background-color: white;
+  color: black;
+  border: #000 solid thin;
+}
+
+.perspective-button.clicked {
+  background-color: black;
+  color: white;
+  border: white solid thin;
+}
+
+.ChessMaster-Link{
+  text-decoration: none;
+}
+
+.ChessMaster {
+  font-size: 2.8rem;
+  margin-left: 11rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #000;
+}
+
+.logo {
+  background-color: #c4c4c4;
+  margin-left: 7.7rem;
+  margin-top: 1.8rem;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 42px;
+  width:auto;
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+
+.board-logo{
+  height: 40px;
+  width: auto;
+}
+
+.practice-logo{
+  height: 40px;
+  width: auto;
+}
+
+.pieces-logo{
+  height: 40px;
+  width: auto;
+}
+
+.settings-logo{
+  height: 40px;
+  width: auto;
+}
+
+.user-logo{
+  height: 40px;
+  width: auto;
 }
