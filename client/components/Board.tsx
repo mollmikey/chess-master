@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 function Board() {
   const [isWhitePerspective, setIsWhitePerspective] = useState(true)
@@ -58,6 +59,14 @@ function Board() {
 
   return (
     <>
+      <Link className="ChessMaster-Link" to="/">
+        <img
+          className="logo"
+          alt="logo"
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Font_Awesome_5_solid_chess-pawn.svg/1200px-Font_Awesome_5_solid_chess-pawn.svg.png"
+        ></img>
+        <h1 className="ChessMaster">Chess Master</h1>
+      </Link>
       <div className="buttons-container">
         <button
           className={selectedLayout === 1 ? 'layout-1 selected' : 'layout-1'}
