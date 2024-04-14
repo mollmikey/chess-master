@@ -74,38 +74,65 @@ const Practice = () => {
   const [incorrectScore, setIncorrectScore] = useState(0)
   const [totalScore, setTotalScore] = useState(0)
   const [isGenerated, setIsGenerated] = useState(false)
-  const [isPositionSelected, setIsPositionSelected] = useState(false)
   const [isGuessMade, setIsGuessMade] = useState(false)
+  const [remainingPositions, setRemainingPositions] = useState([...positions])
+  const [incorrectPositions, setIncorrectPositions] = useState<string[]>([])
 
   const generateRandomPosition = () => {
-    const randomIndex = Math.floor(Math.random() * positions.length)
-    setRandomPosition(positions[randomIndex])
+    if (remainingPositions.length === 0) {
+      setRemainingPositions([...positions])
+    }
+    const randomIndex = Math.floor(Math.random() * remainingPositions.length)
+    const newPosition = remainingPositions[randomIndex]
+    setRemainingPositions(
+      remainingPositions.filter((pos) => pos !== newPosition),
+    )
+    setRandomPosition(newPosition)
     setIsGenerated(true)
-    setIsPositionSelected(false)
     setIsGuessMade(false)
   }
 
   const handleButtonClick = (position: string) => {
-    setTotalScore(totalScore + 1)
+    setTotalScore((prevTotalScore) => prevTotalScore + 1)
     if (position === randomPosition) {
-      setCorrectScore(correctScore + 1)
+      setCorrectScore((prevCorrectScore) => prevCorrectScore + 1)
     } else {
-      setIncorrectScore(incorrectScore + 1)
+      setIncorrectScore((prevIncorrectScore) => prevIncorrectScore + 1)
+      setIncorrectPositions((prevIncorrectPositions) => [
+        ...prevIncorrectPositions,
+        position,
+      ])
     }
-    setIsPositionSelected(true)
     setIsGuessMade(true)
+    if (totalScore + 1 !== 0) {
+      generateRandomPosition()
+    }
+  }
+
+  const resetGame = () => {
+    setTotalScore(0)
+    setCorrectScore(0)
+    setIncorrectScore(0)
+    setIsGenerated(false)
+    setIsGuessMade(false)
+    setRemainingPositions([...positions])
+  }
+
+  const retryIncorrect = () => {
+    setRemainingPositions([...incorrectPositions])
+    setIncorrectScore(0)
+    setTotalScore(64 - incorrectPositions.length)
+    setIncorrectPositions([])
   }
 
   return (
     <div className="position-generator">
       <h1>Select the correct square</h1>
-      <button
-        className="pos-gen-button"
-        onClick={generateRandomPosition}
-        disabled={!isPositionSelected && isGenerated}
-      >
-        {isGenerated ? 'Next' : 'Generate Random Position'}
-      </button>
+      {totalScore === 0 && (
+        <button className="pos-gen-button" onClick={generateRandomPosition}>
+          Generate Random Position
+        </button>
+      )}
       <p>{randomPosition}</p>
       <div className="score-container">
         <p>Total score: {totalScore}/64</p>
@@ -124,6 +151,12 @@ const Practice = () => {
           </button>
         ))}
       </div>
+      {totalScore === 64 && (
+        <div>
+          <button onClick={resetGame}>Play Again</button>
+          <button onClick={retryIncorrect}>Retry Incorrect</button>
+        </div>
+      )}
     </div>
   )
 }
